@@ -123,14 +123,14 @@ public:
         if (Pocket >= 50000000) // 5000 Gold
         {
             std::ostringstream messageTaunt;
-            messageTaunt << "Whadda we have here? A high-roller eh? Step right up " << player->GetName() << "!";
+            messageTaunt << "瞧瞧谁来了，roll点达人么？来赌一发吧，" << player->GetName() << "！";
             player->GetSession()->SendNotification(messageTaunt.str().c_str());
         }
 
         std::ostringstream messageJackpot;
-        messageJackpot << "Place your bet. Today's Jackpot is " << Jackpot << " gold.";
+        messageJackpot << "下注吧，今天的头奖是" << Jackpot << "G";
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, messageJackpot.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "So, how does this game work?", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "这游戏怎么玩？", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
         player->SEND_GOSSIP_MENU(601020, creature->GetGUID());
         return true;
     }
@@ -168,9 +168,9 @@ public:
             break;
 
         case GOSSIP_ACTION_INFO_DEF + 2:
-            messageInstruct << "The rules are simple " << player->GetName() << ".. If you roll higher than 50, you win double the bet amount. Otherwise, you lose twice the bet amount. A roll of 100 wins the jackpot. Good Luck!";
+            messageInstruct << "The rules are simple " << player->GetName() << ".. 如果你roll了超过50点，你会赢得双倍赌注，否则就会输掉双倍赌注；roll出100点可以直接赢得头奖，祝你好运！";
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT_11, messageInstruct.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Alright Skinny, I'm up for some gambling.", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "好吧Skinny，我来赌一发。", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
             player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
             break;
 
@@ -232,7 +232,7 @@ public:
         if (Losses >= 5 && Roll < 50)
         {
             std::ostringstream messageHelp;
-            messageHelp << "Lady luck isn't on your side tonight " << player->GetName() << ".";
+            messageHelp << "幸运今晚不站在你这边啊" << player->GetName() << "。";
             creature->MonsterWhisper(messageHelp.str().c_str(), player);
             Roll = Roll + 25;
             Losses = 0;
@@ -243,7 +243,7 @@ public:
         if (Pocket < (Amount / 2))
         {
             std::ostringstream messageTaunt;
-            messageTaunt << "Hey, I got no time for cheapskates " << player->GetName() << ". Come back when you have " << ((Amount / 10000) / 2) << " gold!";
+            messageTaunt << "我没时间陪小气鬼，" << player->GetName() << "，等你有了" << ((Amount / 10000) / 2) << "G再回来吧。";
             player->AddAura(228, player);	// Polymorph Chicken
             player->AddAura(5782, player);	// Fear
             creature->MonsterWhisper(messageTaunt.str().c_str(), player);
@@ -262,8 +262,8 @@ public:
             player->PlayDirectSound(3337);
             player->CastSpell(player, 47292);
             player->CastSpell(player, 44940);
-            messageAction << "The bones come to rest with a total roll of " << Roll << ".";
-            messageNotice << "Wowzers " << player->GetName() << "! You hit the jackpot and win " << Jackpot << " gold!";
+            messageAction << "骰子roll出了" << Roll << "点。";
+            messageNotice << "哇！" << player->GetName() << "，你中了头奖" << Jackpot << "G！";
             creature->MonsterWhisper(messageAction.str().c_str(), player);
             player->GetSession()->SendNotification(messageNotice.str().c_str());
             player->CLOSE_GOSSIP_MENU();
@@ -282,8 +282,8 @@ public:
             player->PlayDirectSound(3337);
             player->CastSpell(player, 47292);
             player->CastSpell(player, 44940);
-            messageAction << "The bones come to rest with a total roll of " << Roll << ".";
-            messageNotice << "Congratulations " << player->GetName() << ", You've won " << Amount / 10000 << " gold!";
+            messageAction << "骰子roll出了" << Roll << "点。";
+            messageNotice << "恭喜" << player->GetName() << "，你赢了" << Amount / 10000 << "G！";
             creature->MonsterWhisper(messageAction.str().c_str(), player);
             ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
@@ -294,8 +294,8 @@ public:
             std::ostringstream messageNotice;
             player->ModifyMoney(-Amount);
             Losses = Losses + 1;
-            messageAction << "The bones come to rest with a total roll of " << Roll << ".";
-            messageNotice << "Tough luck " << player->GetName() << ", you've lost " << Amount / 10000 << " gold!";
+            messageAction << "骰子roll出了" << Roll << "点。";
+            messageNotice << "恭喜你" << player->GetName() << "！你赔了" << Amount / 10000 << "G！";
             creature->MonsterWhisper(messageAction.str().c_str(), player);
             ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
             creature->HandleEmoteCommand(EMOTE_ONESHOT_QUESTION);
@@ -327,7 +327,7 @@ public:
 
             if (uiAdATimer <= diff)
             {
-                me->MonsterSay("Come one, come all! Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
+                me->MonsterSay("来吧，都来，来Skinny这，下注！下注！", LANG_UNIVERSAL, NULL);
                 me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
                 me->CastSpell(me, 44940);
                 uiAdATimer = 61000;
@@ -337,7 +337,7 @@ public:
 
             if (uiAdBTimer <= diff)
             {
-                me->MonsterSay("Come on! Place your bets, Don't be a chicken!", LANG_UNIVERSAL, NULL);
+                me->MonsterSay("来下注啊，别跟个奥巴马似的", LANG_UNIVERSAL, NULL);
                 me->HandleEmoteCommand(EMOTE_ONESHOT_CHICKEN);
                 uiAdBTimer = 61000;
             }
@@ -346,7 +346,7 @@ public:
 
             if (uiAdCTimer <= diff)
             {
-                me->MonsterSay("Don't make me sad, Come and gamble! Step right up and win today!", LANG_UNIVERSAL, NULL);
+                me->MonsterSay("别让我失望，来赌一发吧，今天赢一场！", LANG_UNIVERSAL, NULL);
                 me->HandleEmoteCommand(EMOTE_ONESHOT_CRY);
                 uiAdCTimer = 61000;
             }
