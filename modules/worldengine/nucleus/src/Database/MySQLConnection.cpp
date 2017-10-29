@@ -7,6 +7,10 @@
 
 
 #include "Common.h"
+#ifndef CR_INVALID_CONN_HANDLE
+  #define CR_INVALID_CONN_HANDLE 2048
+#endif
+/* in case that "CR_INVALID_CONN_HANDLE undefined" */
 
 #ifdef _WIN32
   #include <winsock2.h>
